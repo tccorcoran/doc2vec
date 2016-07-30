@@ -39,7 +39,7 @@ def parseTexts(fname):
 if __name__ == "__main__":
     inp = sys.argv[1]
     outp = os.path.splitext(inp)[0]
-    with open(outp+'_.sku_doc','w') as fo:
+    with open(outp+'.sku_doc','w') as fo:
         for sku,doc in parseTexts(inp):
             fo.write("{} {}\n".format(sku,' '.join(doc)))
 
