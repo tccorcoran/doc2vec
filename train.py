@@ -5,6 +5,7 @@ from collections import namedtuple
 from gensim.models.doc2vec import TaggedDocument
 from gensim.models import Doc2Vec
 import numpy as np
+from random import shuffle
 
 ProductDocument = namedtuple('ProductText', 'words tags')
 alldocs= []
@@ -19,13 +20,14 @@ def train(input_file,doc_limit,n_epochs=1):
             if i>=doc_limit:
                 break
             alldocs.append(ProductDocument(text,sku))
-    model = Doc2Vec(dm=0, size=128, window=5, negative=5, min_count=20, workers=31)
+    model = Doc2Vec(size=128, window=5, negative=5, min_count=20, workers=31)
     print ("Building model vocab...")
     model.build_vocab(alldocs)
     alpha, min_alpha, passes = (0.025, 0.001, n_epochs)
     alpha_delta = (alpha - min_alpha) / passes
     print ("Training model...")
     for epoch in range(n_epochs):
+        shuffle(all_docs)
         model.alpha -=alpha  # decrease the learning rate
         model.min_alpha = model.alpha  # fix the learning rate, no decay
         model.train(alldocs)
